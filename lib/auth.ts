@@ -18,7 +18,7 @@ export interface JWTPayload {
 }
 
 export async function signToken(payload: JWTPayload): Promise<string> {
-  return await new SignJWT(payload)
+  return await new SignJWT(payload as any)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("7d")
@@ -30,7 +30,7 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
     console.log("verifying token:", token);
     const { payload } = await jwtVerify(token, secret);
     console.log("verifyToken Output: ", payload);
-    return payload as JWTPayload
+    return payload as unknown as JWTPayload
   } catch (error) {
     console.log("JWT verification error:", error);
     return null
