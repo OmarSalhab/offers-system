@@ -1,0 +1,5 @@
+-fix the login redirect process.
+-connect the project to the R3 cloudstorage after i read the chatgpt file and understand it completly.
+-change the language from english to arabic.
+-fix the dashboard crud operation like hide and active.
+-add more features to the dashboard page.

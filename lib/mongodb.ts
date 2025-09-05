@@ -1,0 +1,51 @@
+import mongoose from "mongoose"
+import { loadEnvConfig } from '@next/env'
+ 
+const projectDir = process.cwd()
+loadEnvConfig(projectDir)
+const MONGODB_URI = process.env.MONGODB_URI!
+
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable inside .env.local")
+}
+
+interface MongooseCache {
+  conn: typeof mongoose | null
+  promise: Promise<typeof mongoose> | null
+}
+
+// Global cache to prevent multiple connections during hot reloads
+declare global {
+  var myMongoose: MongooseCache | undefined
+}
+
+let cached = global.myMongoose
+
+if (!cached) {
+  cached = global.myMongoose = { conn: null, promise: null }
+}
+
+async function connectDB() {
+  if (cached!.conn) {
+    return cached!.conn
+  }
+
+  if (!cached!.promise) {
+    const opts = {
+      bufferCommands: false,
+    }
+
+    cached!.promise = mongoose.connect(MONGODB_URI, opts)
+  }
+
+  try {
+    cached!.conn = await cached!.promise
+  } catch (e) {
+    cached!.promise = null
+    throw e
+  }
+
+  return cached!.conn
+}
+
+export default connectDB
