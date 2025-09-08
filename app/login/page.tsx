@@ -39,8 +39,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Admin Login</CardTitle>
-          <CardDescription>Sign in to access the admin dashboard</CardDescription>
+          <CardTitle className="text-2xl font-bold">تسجيل دخول المشرف</CardTitle>
+          <CardDescription>سجّل الدخول للوصول إلى لوحة التحكم</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -51,7 +51,7 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">البريد الإلكتروني</Label>
               <Input
                 id="email"
                 type="email"
@@ -64,7 +64,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">كلمة المرور</Label>
               <Input
                 id="password"
                 type="password"
@@ -72,19 +72,19 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={loading}
-                placeholder="Enter your password"
+                placeholder="أدخل كلمة المرور"
               />
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
             </Button>
           </form>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
-            <p>Default credentials:</p>
-            <p>Email: admin@offers-system.com</p>
-            <p>Password: admin123</p>
+            <p>بيانات تسجيل الدخول الافتراضية:</p>
+            <p>البريد الإلكتروني: admin@offers-system.com</p>
+            <p>كلمة المرور: admin123</p>
           </div>
         </CardContent>
       </Card>

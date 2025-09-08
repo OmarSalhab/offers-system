@@ -148,22 +148,22 @@ export default function NewOfferPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">إنشاء عرض جديد</h2>
+          <p className="text-muted-foreground">أضف عرضاً خاصاً جديداً إلى النظام</p>
+        </div>
         <Link href="/admin">
           <Button variant="outline" size="sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Offers
+            الرجوع إلى العروض
           </Button>
         </Link>
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Create New Offer</h2>
-          <p className="text-muted-foreground">Add a new special offer to your system</p>
-        </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Offer Details</CardTitle>
+          <CardTitle>تفاصيل العرض</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -174,7 +174,7 @@ export default function NewOfferPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
+              <Label htmlFor="title">العنوان *</Label>
               <Input
                 id="title"
                 name="title"
@@ -188,7 +188,7 @@ export default function NewOfferPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description *</Label>
+              <Label htmlFor="description">الوصف *</Label>
               <Textarea
                 id="description"
                 name="description"
@@ -204,7 +204,7 @@ export default function NewOfferPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="originalPrice">Original Price *</Label>
+                <Label htmlFor="originalPrice">السعر الأصلي *</Label>
                 <Input
                   id="originalPrice"
                   name="originalPrice"
@@ -219,7 +219,7 @@ export default function NewOfferPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="discountedPrice">Discounted Price *</Label>
+                <Label htmlFor="discountedPrice">السعر بعد الخصم *</Label>
                 <Input
                   id="discountedPrice"
                   name="discountedPrice"
@@ -237,7 +237,7 @@ export default function NewOfferPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="validFrom">Valid From *</Label>
+                <Label htmlFor="validFrom">ساري من *</Label>
                 <Input
                   id="validFrom"
                   name="validFrom"
@@ -249,7 +249,7 @@ export default function NewOfferPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="validUntil">Valid Until *</Label>
+                <Label htmlFor="validUntil">ساري حتى *</Label>
                 <Input
                   id="validUntil"
                   name="validUntil"
@@ -263,10 +263,10 @@ export default function NewOfferPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="image">Offer Image</Label>
+              <Label htmlFor="image">صورة العرض</Label>
               <Input id="image" type="file" accept="image/*" onChange={handleImageChange} disabled={loading} />
               <p className="text-sm text-muted-foreground">
-                Optional. Supported formats: JPG, PNG, GIF. Max size: 5MB.
+                اختياري. الصيغ المدعومة: JPG, PNG, GIF. الحجم الأقصى: 5MB.
               </p>
               {imagePreview && (
                 <div className="mt-4">
@@ -281,11 +281,11 @@ export default function NewOfferPage() {
 
             <div className="flex gap-4 pt-4">
               <Button type="submit" disabled={loading} className="flex-1">
-                {loading ? "Creating..." : "Create Offer"}
+                {loading ? "جارٍ الإنشاء..." : "إنشاء العرض"}
               </Button>
               <Link href="/admin" className="flex-1">
                 <Button type="button" variant="outline" className="w-full bg-transparent" disabled={loading}>
-                  Cancel
+                  إلغاء
                 </Button>
               </Link>
             </div>

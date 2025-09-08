@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -25,7 +25,7 @@ interface Offer {
   imageUrl?: string
 }
 
-export default function EditOfferPage({ params }: { params: { id: string } }) {
+export default function EditOfferPage() {
   const [offer, setOffer] = useState<Offer | null>(null)
   const [formData, setFormData] = useState({
     title: "",
@@ -41,11 +41,14 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(false)
   const [fetchLoading, setFetchLoading] = useState(true)
   const router = useRouter()
+  const params = useParams<{ id: string }>()
+  const id = params?.id
 
   useEffect(() => {
     const fetchOffer = async () => {
       try {
-        const response = await fetch(`/api/admin/offers/${params.id}`)
+        if (!id) return
+        const response = await fetch(`/api/admin/offers/${id}`)
         if (!response.ok) {
           throw new Error("Failed to fetch offer")
         }
@@ -70,7 +73,7 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
     }
 
     fetchOffer()
-  }, [params.id])
+  }, [id])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -164,7 +167,8 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
       }
 
       // Update offer
-      const response = await fetch(`/api/admin/offers/${params.id}`, {
+      if (!id) throw new Error("Missing offer id in route params")
+      const response = await fetch(`/api/admin/offers/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -194,7 +198,7 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
     return (
       <div className="text-center py-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-        <p className="text-muted-foreground">Loading offer...</p>
+        <p className="text-muted-foreground">جاري تحميل العرض...</p>
       </div>
     )
   }
@@ -203,7 +207,7 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
     return (
       <div className="text-center py-8">
         <Alert variant="destructive">
-          <AlertDescription>Offer not found</AlertDescription>
+          <AlertDescription>العرض غير موجود</AlertDescription>
         </Alert>
       </div>
     )
@@ -211,22 +215,22 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">تعديل العرض</h2>
+          <p className="text-muted-foreground">تحديث تفاصيل العرض</p>
+        </div>
         <Link href="/admin">
           <Button variant="outline" size="sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Offers
+            الرجوع إلى العروض
           </Button>
         </Link>
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Edit Offer</h2>
-          <p className="text-muted-foreground">Update offer details</p>
-        </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Offer Details</CardTitle>
+          <CardTitle>تفاصيل العرض</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -237,7 +241,7 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
+              <Label htmlFor="title">العنوان *</Label>
               <Input
                 id="title"
                 name="title"
@@ -251,7 +255,7 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description *</Label>
+              <Label htmlFor="description">الوصف *</Label>
               <Textarea
                 id="description"
                 name="description"
@@ -267,7 +271,7 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="originalPrice">Original Price *</Label>
+                <Label htmlFor="originalPrice">السعر الأصلي *</Label>
                 <Input
                   id="originalPrice"
                   name="originalPrice"
@@ -282,7 +286,7 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="discountedPrice">Discounted Price *</Label>
+                <Label htmlFor="discountedPrice">السعر بعد الخصم *</Label>
                 <Input
                   id="discountedPrice"
                   name="discountedPrice"
@@ -300,7 +304,7 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="validFrom">Valid From *</Label>
+                <Label htmlFor="validFrom">ساري من *</Label>
                 <Input
                   id="validFrom"
                   name="validFrom"
@@ -312,7 +316,7 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="validUntil">Valid Until *</Label>
+                <Label htmlFor="validUntil">ساري حتى *</Label>
                 <Input
                   id="validUntil"
                   name="validUntil"
@@ -326,10 +330,10 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="image">Offer Image</Label>
+              <Label htmlFor="image">صورة العرض</Label>
               <Input id="image" type="file" accept="image/*" onChange={handleImageChange} disabled={loading} />
               <p className="text-sm text-muted-foreground">
-                Optional. Leave empty to keep current image. Supported formats: JPG, PNG, GIF. Max size: 5MB.
+                اختياري. اتركه فارغاً للحفاظ على الصورة الحالية. الصيغ المدعومة: JPG, PNG, GIF. الحجم الأقصى: 5MB.
               </p>
               {imagePreview && (
                 <div className="mt-4">
@@ -344,11 +348,11 @@ export default function EditOfferPage({ params }: { params: { id: string } }) {
 
             <div className="flex gap-4 pt-4">
               <Button type="submit" disabled={loading} className="flex-1">
-                {loading ? "Updating..." : "Update Offer"}
+                {loading ? "جارٍ التحديث..." : "تحديث العرض"}
               </Button>
               <Link href="/admin" className="flex-1">
                 <Button type="button" variant="outline" className="w-full bg-transparent" disabled={loading}>
-                  Cancel
+                  إلغاء
                 </Button>
               </Link>
             </div>

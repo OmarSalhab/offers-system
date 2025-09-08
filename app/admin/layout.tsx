@@ -48,32 +48,32 @@ export default function AdminLayout({
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
-              <nav className="flex items-center gap-4">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
+              <h1 className="text-xl font-bold text-foreground sm:text-2xl">لوحة التحكم</h1>
+              <nav className="flex flex-wrap items-center gap-2 sm:gap-4">
                 <Link
                   href="/admin"
-                  className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-accent text-sm font-medium"
+                  className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-accent text-sm font-medium sm:px-3"
                 >
                   <Package className="h-4 w-4" />
-                  Offers
+                  العروض
                 </Link>
                 <Link
                   href="/"
-                  className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-accent text-sm font-medium"
+                  className="flex items-center gap-2 px-2 py-2 rounded-md hover:bg-accent text-sm font-medium sm:px-3"
                 >
                   <Home className="h-4 w-4" />
-                  View Site
+                  عرض الموقع
                 </Link>
               </nav>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground">Welcome, {admin.name}</span>
+            <div className="flex items-center justify-between gap-3 sm:justify-end">
+              <span className="text-xs text-muted-foreground sm:text-sm truncate max-w-[60%] sm:max-w-none">مرحباً، {admin.name}</span>
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                تسجيل الخروج
               </Button>
             </div>
           </div>
@@ -81,8 +81,8 @@ export default function AdminLayout({
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">{children}</main>
-      
+      <main className="container mx-auto px-4 py-6 sm:py-8">{children}</main>
+
       {/* Toast Notifications */}
       <Toaster />
     </div>

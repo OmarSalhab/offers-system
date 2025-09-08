@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import connectDB from "@/lib/mongodb"
 import Offer from "@/models/Offer"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { r2Client, R2_BUCKET_NAME } from "@/lib/r2Client"
+import { r2Client, getR2BucketName } from "@/lib/r2Client"
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
@@ -78,9 +78,9 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     // Delete image from R2 if it exists
     if (offer.imageKey) {
       try {
-        await r2Client.send(
+        await r2Client().send(
           new DeleteObjectCommand({
-            Bucket: R2_BUCKET_NAME,
+            Bucket: getR2BucketName(),
             Key: offer.imageKey,
           }),
         )

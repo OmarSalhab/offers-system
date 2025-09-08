@@ -133,15 +133,15 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-foreground">Offers Management</h2>
-          <p className="text-muted-foreground">Create and manage your special offers</p>
+          <h2 className="text-2xl font-bold text-foreground sm:text-3xl">إدارة العروض</h2>
+          <p className="text-muted-foreground text-sm sm:text-base">إنشاء وإدارة العروض الخاصة</p>
         </div>
-        <Link href="/admin/offers/new">
-          <Button>
+        <Link href="/admin/offers/new" className="self-start sm:self-auto">
+          <Button className="w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
-            Create Offer
+            إنشاء عرض
           </Button>
         </Link>
       </div>
@@ -167,60 +167,60 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
           {offers.map((offer) => (
-            <Card key={offer._id} className="overflow-hidden">
-              {offer.imageUrl && (
-                <div className="aspect-video bg-muted">
+            <Card key={offer._id} className="overflow-hidden h-full">
+              <div className="bg-muted">
+                <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
                   <img
                     src={offer.imageUrl || "/placeholder.svg"}
                     alt={offer.title}
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
-              )}
+              </div>
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
-                  <CardTitle className="text-lg line-clamp-2">{offer.title}</CardTitle>
+                  <CardTitle className="text-base sm:text-lg line-clamp-2">{offer.title}</CardTitle>
                   <div className="flex gap-1 ml-2">
                     {isOfferActive(offer) && (
                       <Badge variant="default" className="text-xs">
-                        Active
+                        نشط
                       </Badge>
                     )}
                     {offer.isHidden ? (
                       <Badge variant="destructive" className="text-xs">
-                        Hidden
+                        مخفي
                       </Badge>
                     ) : (
                       <Badge variant="secondary" className="text-xs">
-                        Visible
+                        ظاهر
                       </Badge>
                     )}
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground line-clamp-2">{offer.description}</p>
+                <p className="text-sm text-muted-foreground line-clamp-3">{offer.description}</p>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-primary">${offer.discountedPrice.toFixed(2)}</span>
-                  <span className="text-sm text-muted-foreground line-through">${offer.originalPrice.toFixed(2)}</span>
+                  <span className="text-base sm:text-lg font-bold text-primary">${offer.discountedPrice.toFixed(2)}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground line-through">${offer.originalPrice.toFixed(2)}</span>
                 </div>
 
                 <div className="text-xs text-muted-foreground">
                   <div>
-                    Valid: {new Date(offer.validFrom).toLocaleDateString()} -{" "}
+                    صالح: {new Date(offer.validFrom).toLocaleDateString()} -{" "}
                     {new Date(offer.validUntil).toLocaleDateString()}
                   </div>
-                  <div>Created: {new Date(offer.createdAt).toLocaleDateString()}</div>
+                  <div>تاريخ الإنشاء: {new Date(offer.createdAt).toLocaleDateString()}</div>
                 </div>
 
                 <div className="flex gap-2 pt-2">
                   <Link href={`/admin/offers/${offer._id}/edit`} className="flex-1">
                     <Button variant="outline" size="sm" className="w-full bg-transparent">
                       <Edit className="h-4 w-4 mr-1" />
-                      Edit
+                      تعديل
                     </Button>
                   </Link>
                   <Button 
@@ -228,7 +228,7 @@ export default function AdminDashboard() {
                     size="sm" 
                     onClick={() => handleToggleVisibility(offer._id, offer.isHidden)}
                     disabled={togglingOffers.has(offer._id)}
-                    title={offer.isHidden ? "Show offer to users" : "Hide offer from users"}
+                    title={offer.isHidden ? "إظهار العرض للمستخدمين" : "إخفاء العرض عن المستخدمين"}
                     className="flex items-center gap-1"
                   >
                     {togglingOffers.has(offer._id) ? (
@@ -236,12 +236,12 @@ export default function AdminDashboard() {
                     ) : offer.isHidden ? (
                       <>
                         <Eye className="h-4 w-4" />
-                        <span className="text-xs">Show</span>
+                        <span className="text-xs">إظهار</span>
                       </>
                     ) : (
                       <>
                         <EyeOff className="h-4 w-4" />
-                        <span className="text-xs">Hide</span>
+                        <span className="text-xs">إخفاء</span>
                       </>
                     )}
                   </Button>

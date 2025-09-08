@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import { PutObjectCommand } from "@aws-sdk/client-s3"
-import { r2Client, R2_BUCKET_NAME, CDN_BASE_URL } from "@/lib/r2Client"
+import { r2Client, getR2BucketName, getCDNBaseUrl } from "@/lib/r2Client"
 import { randomUUID } from "crypto"
 
 export async function POST(request: Request) {
@@ -23,15 +23,15 @@ export async function POST(request: Request) {
 
     // Create signed URL for upload
     const command = new PutObjectCommand({
-      Bucket: R2_BUCKET_NAME,
+      Bucket: getR2BucketName(),
       Key: imageKey,
       ContentType: fileType,
     })
 
-    const signedUrl = await getSignedUrl(r2Client, command, { expiresIn: 3600 }) // 1 hour
+    const signedUrl = await getSignedUrl(r2Client(), command, { expiresIn: 3600 }) // 1 hour
 
     // Construct the public URL
-    const imageUrl = `${CDN_BASE_URL}/${imageKey}`
+    const imageUrl = `${getCDNBaseUrl()}/${imageKey}`
 
     return NextResponse.json({
       signedUrl,
